@@ -1,0 +1,5 @@
+/bin
+/demo/Debug
+*.suo
+foobarboz.txt
+*.vcxproj.user
