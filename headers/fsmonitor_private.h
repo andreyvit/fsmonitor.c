@@ -82,6 +82,16 @@ void fslistener_free(fslistener_t *listener);
 
 /**************************************************************/
 
+struct fsmonitor_t {
+  char *path;
+  fstree_t *tree;
+  fslistener_t *listener;
+  fsmonitor_callback_t callback;
+  void *callback_data;
+};
+
+/**************************************************************/
+
 #include <stdarg.h>
 #include <string.h>
 #include <stdlib.h>

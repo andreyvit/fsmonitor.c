@@ -1,5 +1,5 @@
 
-#include "fsmonitor_private.h"
+#include "fsmonitor.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,10 +10,8 @@
 #include <unistd.h>
 #endif
 
-void fslistener_callback(const char *path, fslistener_hint hint, void *data) {
-    if (hint == fslistener_hint_startup || hint == fslistener_hint_shutdown)
-        return;
-    printf("change in %s (%d)\n", path, hint);
+void fsmonitor_callback(fsdiff_t *diff, fstree_t *current, void *data) {
+    fsdiff_dump(diff);
 }
 
 int main(int argc, char **argv) {
@@ -43,8 +41,10 @@ int main(int argc, char **argv) {
     fstree_free(tree);
     fstree_free(tree2);
 
-    fslistener_t *listener = fslistener_create(path, fslistener_callback, NULL);
-    SleepEx(30000, TRUE);
+    fsmonitor_t *monitor = fsmonitor_create(path, NULL, fsmonitor_callback, NULL);
+    int dummy;
+    scanf("%d", &dummy);
+    fsmonitor_free(monitor);
 
     return 0;
 }
