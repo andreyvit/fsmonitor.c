@@ -48,10 +48,6 @@ fstree_t *fstree_create(const char *root_path, fsfilter_t *filter, fstree_t *pre
   item_t *items = (item_t *)malloc(items_size * sizeof(item_t));
   tree->count = 0;
 
-#if FSTREE_ITEM_IS_DIR
-    printf("fstree_create: called for '%s'\n", root_path);
-#endif
-
   // add root item
   MultiByteToWideChar(CP_UTF8, 0, root_path, -1, buf, MAX_PATH);
   hFind = FindFirstFile(buf, &st);
@@ -66,18 +62,11 @@ fstree_t *fstree_create(const char *root_path, fsfilter_t *filter, fstree_t *pre
     if (!FSTREE_ITEM_IS_DIR(item))
       continue;
 
-#if FSMONITOR_DEBUG
-    printf("fstree_create: inside '%s'\n", item->name);
-#endif
-
     // used for sorting the newly added entries later
     int first = tree->count;
 
     // real path of the item
     const char *item_path = bufpathcat(&item_path_buf, &item_path_buf_size, root_path, item->name);
-#if FSMONITOR_DEBUG
-    printf("fstree_create: item_path = '%s'\n", item_path);
-#endif
 
     MultiByteToWideChar(CP_UTF8, 0, item_path, -1, buf, MAX_PATH);
     wcscat(buf, L"/*.*");
@@ -88,13 +77,7 @@ fstree_t *fstree_create(const char *root_path, fsfilter_t *filter, fstree_t *pre
       if (0 == wcscmp(st.cFileName, L".") || 0 == wcscmp(st.cFileName, L".."))
           continue;
       char *subitem_name = w2u(st.cFileName);
-#if FSMONITOR_DEBUG
-    printf("fstree_create: looking at '%s'\n", subitem_name);
-#endif
       const char *subitem_path = bufstrcat(&subitem_path_buf, &subitem_path_buf_size, item_path, "/", subitem_name, NULL);
-#if FSMONITOR_DEBUG
-    printf("fstree_create: subitem_path = '%s'\n", subitem_path);
-#endif
 
       const char *subitem_rel_path = bufpathcat(&subitem_path_buf, &subitem_path_buf_size, item->name, subitem_name);
       if (tree->count == items_size) {
