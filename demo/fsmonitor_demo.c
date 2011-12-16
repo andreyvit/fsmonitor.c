@@ -1,5 +1,5 @@
 
-#include "fsmonitor.h"
+#include "fsmonitor_private.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,6 +7,12 @@
 #ifndef _WIN32
 #include <unistd.h>
 #endif
+
+void fslistener_callback(const char *path, fslistener_hint hint, void *data) {
+    if (hint == fslistener_hint_startup || hint == fslistener_hint_shutdown)
+        return;
+    printf("change in %s (%d)\n", path, hint);
+}
 
 int main(int argc, char **argv) {
     if (argc != 2) {
@@ -34,6 +40,9 @@ int main(int argc, char **argv) {
     fsdiff_free(diff);
     fstree_free(tree);
     fstree_free(tree2);
+
+    fslistener_t *listener = fslistener_create(path, fslistener_callback, NULL);
+    SleepEx(30000, TRUE);
 
     return 0;
 }

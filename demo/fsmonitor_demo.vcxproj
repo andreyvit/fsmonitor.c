@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\fsdiff.c" />
+    <ClCompile Include="..\src\fslistener_win32.c" />
     <ClCompile Include="..\src\fstree.c" />
     <ClCompile Include="..\src\fstree_create_win32.c" />
     <ClCompile Include="..\src\fstree_diff.c" />

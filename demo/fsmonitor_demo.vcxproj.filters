@@ -37,5 +37,8 @@
     <ClCompile Include="fsmonitor_demo.c">
       <Filter>Demo Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\fslistener_win32.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
