@@ -43,7 +43,8 @@ typedef enum {
   fslistener_hint_dir_deep    = 3,
 } fslistener_hint;
 
-// be careful: can called on any thread
+// can called on any thread
+// diff ownership is transferred to the callback, call fsdiff_free(diff) when done
 typedef void (*fslistener_callback_t)(const char *path, fslistener_hint hint, void *data);
 
 fslistener_t *fslistener_create(const char *path, fslistener_callback_t callback, void *data);
@@ -53,7 +54,8 @@ void fslistener_free(fslistener_t *listener);
 
 typedef struct fsmonitor_t fsmonitor_t;
 
-typedef void (*fsmonitor_callback_t)(fsdiff_t *diff, fstree_t *current, void *data);
+// diff ownership is transferred to the callback, call fsdiff_free(diff) when done
+typedef void (*fsmonitor_callback_t)(fsdiff_t *diff, void *data);
 
 fsmonitor_t *fsmonitor_create(const char *path, fsfilter_t *filter, fsmonitor_callback_t callback, void *data);
 void fsmonitor_free(fsmonitor_t *monitor);

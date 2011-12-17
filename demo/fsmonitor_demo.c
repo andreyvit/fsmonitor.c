@@ -10,7 +10,7 @@
 #include <unistd.h>
 #endif
 
-void fsmonitor_callback(fsdiff_t *diff, fstree_t *current, void *data) {
+void fsmonitor_callback(fsdiff_t *diff, void *data) {
     fsdiff_dump(diff);
 }
 

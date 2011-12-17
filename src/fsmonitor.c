@@ -30,8 +30,7 @@ static void fsmonitor_listener_callback(const char *path, fslistener_hint hint, 
         fstree_t *current  = fstree_create(path, NULL, previous);
         monitor->tree = current;
         fsdiff_t *diff = fstree_diff(previous, current);
-        monitor->callback(diff, current, monitor->callback_data);
-        fsdiff_free(diff);
         fstree_free(previous);
+        monitor->callback(diff, monitor->callback_data);
     }
 }
