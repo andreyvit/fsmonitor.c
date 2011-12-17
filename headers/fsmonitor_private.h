@@ -62,6 +62,7 @@ struct fslistener_t {
   void *callback_data;
 #ifdef _WIN32
   HANDLE hThread;
+  HANDLE hShutDownEvent;
 #endif
 };
 
