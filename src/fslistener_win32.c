@@ -40,7 +40,6 @@ static unsigned __stdcall fslistener_thread(void *param) {
 
   HANDLE hChange = FindFirstChangeNotification(buf, TRUE, FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE | FILE_NOTIFY_CHANGE_SIZE | FILE_NOTIFY_CHANGE_ATTRIBUTES);
   assert(hChange != INVALID_HANDLE_VALUE);
-  printf("Listening to changes in %s\n", listener->path);
 
   HANDLE hWaitObjects[] = { hChange, listener->hShutDownEvent };
 
@@ -48,7 +47,6 @@ static unsigned __stdcall fslistener_thread(void *param) {
   while (TRUE) {
     DWORD status = WaitForMultipleObjects(2, hWaitObjects, FALSE, INFINITE);
     if (status == WAIT_OBJECT_0) {
-      printf("Detected change in %s\n", listener->path);
       listener->callback(listener->path, fslistener_hint_dir_deep, listener->callback_data);
       DWORD result = FindNextChangeNotification(hChange);
       assert(result);
