@@ -33,6 +33,24 @@ fsdiff_t *fstree_diff(fstree_t *previous, fstree_t *current);
 
 /**************************************************************/
 
+typedef struct fslistener_t fslistener_t;
+
+typedef enum {
+  fslistener_hint_startup     = 10,
+  fslistener_hint_shutdown    = 11,
+  fslistener_hint_file        = 1,
+  fslistener_hint_dir_shallow = 2,
+  fslistener_hint_dir_deep    = 3,
+} fslistener_hint;
+
+// be careful: can called on any thread
+typedef void (*fslistener_callback_t)(const char *path, fslistener_hint hint, void *data);
+
+fslistener_t *fslistener_create(const char *path, fslistener_callback_t callback, void *data);
+void fslistener_free(fslistener_t *listener);
+
+/**************************************************************/
+
 typedef struct fsmonitor_t fsmonitor_t;
 
 typedef void (*fsmonitor_callback_t)(fsdiff_t *diff, fstree_t *current, void *data);

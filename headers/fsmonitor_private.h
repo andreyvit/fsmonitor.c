@@ -56,18 +56,6 @@ struct fstree_t {
 
 /**************************************************************/
 
-typedef struct fslistener_t fslistener_t;
-
-typedef enum {
-  fslistener_hint_startup,
-  fslistener_hint_shutdown,
-  fslistener_hint_file,
-  fslistener_hint_dir_shallow,
-  fslistener_hint_dir_deep,
-} fslistener_hint;
-
-typedef void (*fslistener_callback_t)(const char *path, fslistener_hint hint, void *data);
-
 struct fslistener_t {
   char *path;
   fslistener_callback_t callback;
@@ -76,9 +64,6 @@ struct fslistener_t {
   HANDLE hThread;
 #endif
 };
-
-fslistener_t *fslistener_create(const char *path, fslistener_callback_t callback, void *data);
-void fslistener_free(fslistener_t *listener);
 
 /**************************************************************/
 
