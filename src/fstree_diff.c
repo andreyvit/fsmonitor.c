@@ -89,7 +89,7 @@ fsdiff_t *fstree_diff(fstree_t *previous, fstree_t *current) {
   for (j = 0; j < prevcount; j++) {
     if (rcorresponding[j] < 0) {
       if (FSTREE_ITEM_IS_REG(&previtems[j])) {
-        diff->paths[diffcount++] = strdup(previtems[i].name);
+        diff->paths[diffcount++] = strdup(previtems[j].name);
       }
     }
   }
