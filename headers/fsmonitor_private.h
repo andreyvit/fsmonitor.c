@@ -8,6 +8,7 @@
 #pragma warning(disable: 4996)
 #else
 #include <stdbool.h>
+#include <CoreServices/CoreServices.h>
 #endif
 
 #include <sys/stat.h>
@@ -63,6 +64,8 @@ struct fslistener_t {
 #ifdef _WIN32
   HANDLE hThread;
   HANDLE hShutDownEvent;
+#else
+  FSEventStreamRef streamRef;
 #endif
 };
 
