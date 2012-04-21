@@ -8,6 +8,7 @@
 #pragma warning(disable: 4996)
 #else
 #include <unistd.h>
+#include <CoreFoundation/CoreFoundation.h>
 #endif
 
 void fsmonitor_callback(fsdiff_t *diff, void *data) {
@@ -42,8 +43,14 @@ int main(int argc, char **argv) {
     fstree_free(tree2);
 
     fsmonitor_t *monitor = fsmonitor_create(path, NULL, fsmonitor_callback, NULL);
+
+#ifdef __APPLE__
+    CFRunLoopRun();
+    // CFRunLoopRunInMode(kCFRunLoopDefaultMode, 5, false);
+#else
     int dummy;
     scanf("%d", &dummy);
+#endif
     fsmonitor_free(monitor);
 
     return 0;
