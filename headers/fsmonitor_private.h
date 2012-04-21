@@ -17,6 +17,11 @@
 
 #define FSMONITOR_DEBUG 1
 
+// 0 off, 1 log changed files, 2 log changed and unchanged files
+#define FSMONITOR_DIFF_DEBUG 0
+// #define FSMONITOR_DIFF_DEBUG 1
+// #define FSMONITOR_DIFF_DEBUG 2
+
 /**************************************************************/
 
 struct fsdiff_t {

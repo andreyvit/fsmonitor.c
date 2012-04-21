@@ -29,15 +29,21 @@ fsdiff_t *fstree_diff(fstree_t *previous, fstree_t *current) {
   while (i < curcount && j < prevcount) {
     int cp = corresponding[curitems[i].parent];
     if (cp < 0) {
-      //NSLog(@"%@ is a subitem of a new item", curitems[i].name);
+#if FSMONITOR_DIFF_DEBUG
+      printf("%s is a subitem of a new item\n", curitems[i].name);
+#endif
       corresponding[i] = -1;
       ++i;
     } else if (previtems[j].parent < cp) {
-      //NSLog(@"%@ is a deleted item", previtems[j].name);
+#if FSMONITOR_DIFF_DEBUG
+      printf("%s is a deleted item\n", previtems[j].name);
+#endif
       rcorresponding[j] = -1;
       ++j;
     } else if (previtems[j].parent > cp) {
-      //NSLog(@"%@ is a new item", curitems[i].name);
+#if FSMONITOR_DIFF_DEBUG
+      printf("%s is a new item\n", curitems[i].name);
+#endif
       corresponding[i] = -1;
       ++i;
     } else {
@@ -52,10 +58,14 @@ fsdiff_t *fstree_diff(fstree_t *previous, fstree_t *current) {
         if (same)
         {
           // unchanged
-          //                    NSLog(@"%@ is unchanged item", curitems[i].name);
+#if FSMONITOR_DIFF_DEBUG > 1
+         printf("%s is unchanged item\n", curitems[i].name);
+#endif
         } else {
           // changed
-          //NSLog(@"%@ is changed item", curitems[i].name);
+#if FSMONITOR_DIFF_DEBUG
+          printf("%s is changed item\n", curitems[i].name);
+#endif
           if (FSTREE_ITEM_IS_REG(&curitems[i]) || FSTREE_ITEM_IS_REG(&previtems[j])) {
             diff->paths[diffcount++] = strdup(curitems[i].name);
           }
@@ -66,12 +76,16 @@ fsdiff_t *fstree_diff(fstree_t *previous, fstree_t *current) {
         ++j;
       } else if (r > 0) {
         // i is after j => we need to advance j => j is deleted
-        //NSLog(@"%@ is a deleted item", previtems[j].name);
+#if FSMONITOR_DIFF_DEBUG
+        printf("%s is a deleted item\n", previtems[j].name);
+#endif
         rcorresponding[j] = -1;
         ++j;
       } else /* if (r < 0) */ {
         // i is before j => we need to advance i => i is new
-        //NSLog(@"%@ is a new item", curitems[i].name);
+#if FSMONITOR_DIFF_DEBUG
+        printf("%s is a new item\n", curitems[i].name);
+#endif
         corresponding[i] = -1;
         ++i;
       }
