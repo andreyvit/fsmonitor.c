@@ -31,6 +31,8 @@ static void fsmonitor_listener_callback(const char *path, fslistener_hint hint, 
         monitor->tree = current;
         fsdiff_t *diff = fstree_diff(previous, current);
         fstree_free(previous);
-        monitor->callback(diff, monitor->callback_data);
+        if (fsdiff_count(diff) > 0) {
+            monitor->callback(diff, monitor->callback_data);
+        }
     }
 }
