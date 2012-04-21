@@ -44,7 +44,7 @@ typedef struct item_t {
 
 struct fstree_t {
   item_t *items;
-  int count;
+  size_t count;
 };
 
 #ifdef _WIN32

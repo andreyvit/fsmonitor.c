@@ -13,8 +13,8 @@ void fstree_free(fstree_t *tree) {
 }
 
 void fstree_dump(fstree_t *tree) {
-  printf("Tree with %d items:\n", tree->count);
-  for (int i = 0; i < tree->count; ++i) {
-    printf(" %2d) %s\n", i, tree->items[i].name);
+  printf("Tree with %lu items:\n", tree->count);
+  for (size_t i = 0; i < tree->count; ++i) {
+    printf(" %2lu) %s\n", i, tree->items[i].name);
   }
 }

@@ -50,13 +50,13 @@ fstree_t *fstree_create(const char *root_path, fsfilter_t *filter, fstree_t *pre
   fill_item(&items[tree->count++], &st, strdup(""), 0);
 
   // process all directories, starting with the root
-  for (int next = 0; next < tree->count; ++next) {
+  for (size_t next = 0; next < tree->count; ++next) {
     struct item_t *item = &items[next];
     if (!FSTREE_ITEM_IS_DIR(item))
       continue;
 
     // used for sorting the newly added entries later
-    int first = tree->count;
+    size_t first = tree->count;
 
     // real path of the item
     const char *item_path = bufpathcat(&item_path_buf, &item_path_buf_size, root_path, item->name);
