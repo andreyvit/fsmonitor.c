@@ -16,33 +16,38 @@ void fsmonitor_callback(fsdiff_t *diff, void *data) {
 }
 
 int main(int argc, char **argv) {
-    if (argc != 2) {
-        printf("usage: fstree_test /some/path\n");
+    if (argc < 2 || argc > 3) {
+        printf("usage: fsmonitor_demo /some/path\n");
+        printf("usage: fsmonitor_demo /some/path --selftest\n");
         return 1;
     }
     const char *path = argv[1];
 
-    char buf[1024];
-    sprintf(buf, "%s/foobarboz.txt", path);
+    if (argc == 3 && 0 == strcmp(argv[2], "--selftest")) {
+        char buf[1024];
+        sprintf(buf, "%s/foobarboz.txt", path);
 
-    unlink(buf);
+        unlink(buf);
 
-    struct fstree_t *tree = fstree_create(path, NULL, NULL);
-    fstree_dump(tree);
+        struct fstree_t *tree = fstree_create(path, NULL, NULL);
+        fstree_dump(tree);
 
-    fclose(fopen(buf, "w"));
+        fclose(fopen(buf, "w"));
 
-    struct fstree_t *tree2 = fstree_create(path, NULL, tree);
-    fstree_dump(tree2);
+        struct fstree_t *tree2 = fstree_create(path, NULL, tree);
+        fstree_dump(tree2);
 
-    fsdiff_t *diff = fstree_diff(tree, tree2);
-    fsdiff_dump(diff);
+        fsdiff_t *diff = fstree_diff(tree, tree2);
+        fsdiff_dump(diff);
 
-    fsdiff_free(diff);
-    fstree_free(tree);
-    fstree_free(tree2);
+        fsdiff_free(diff);
+        fstree_free(tree);
+        fstree_free(tree2);
+        return 0;
+    }
 
     fsmonitor_t *monitor = fsmonitor_create(path, NULL, fsmonitor_callback, NULL);
+    printf("Monitoring %s\n", path);
 
 #ifdef __APPLE__
     CFRunLoopRun();
