@@ -21,13 +21,13 @@ void fsmonitor_free(fsmonitor_t *monitor) {
 static void fsmonitor_listener_callback(const char *path, fslistener_hint hint, void *data) {
     fsmonitor_t *monitor = (fsmonitor_t *)data;
     if (hint == fslistener_hint_startup) {
-        monitor->tree = fstree_create(path, NULL, NULL);
+        monitor->tree = fstree_create(monitor->path, NULL, NULL);
     } else if (hint == fslistener_hint_shutdown) {
         fstree_free(monitor->tree);
         monitor->tree = NULL;
     } else {
         fstree_t *previous = monitor->tree;
-        fstree_t *current  = fstree_create(path, NULL, previous);
+        fstree_t *current  = fstree_create(monitor->path, NULL, previous);
         monitor->tree = current;
         fsdiff_t *diff = fstree_diff(previous, current);
         fstree_free(previous);
