@@ -13,6 +13,10 @@
 
 #include <sys/stat.h>
 
+#ifdef __APPLE__
+#pragma clang diagnostic ignored "-Wunused-function"
+#endif
+
 /**************************************************************/
 
 #define FSMONITOR_DEBUG 1
