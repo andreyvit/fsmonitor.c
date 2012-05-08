@@ -22,6 +22,7 @@ static void fsmonitor_listener_callback(const char *path, fslistener_hint hint, 
     fsmonitor_t *monitor = (fsmonitor_t *)data;
     if (hint == fslistener_hint_startup) {
         monitor->tree = fstree_create(monitor->path, NULL, NULL);
+        monitor->callback(NULL, monitor->tree, monitor->callback_data);
     } else if (hint == fslistener_hint_shutdown) {
         fstree_free(monitor->tree);
         monitor->tree = NULL;
@@ -32,7 +33,7 @@ static void fsmonitor_listener_callback(const char *path, fslistener_hint hint, 
         fsdiff_t *diff = fstree_diff(previous, current);
         fstree_free(previous);
         if (fsdiff_count(diff) > 0) {
-            monitor->callback(diff, monitor->callback_data);
+            monitor->callback(diff, monitor->tree, monitor->callback_data);
         }
     }
 }

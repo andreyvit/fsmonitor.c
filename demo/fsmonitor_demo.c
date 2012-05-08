@@ -11,7 +11,8 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
-void fsmonitor_callback(fsdiff_t *diff, void *data) {
+void fsmonitor_callback(fsdiff_t *diff, fstree_t *tree, void *data) {
+    if (!diff) return;
     fsdiff_dump(diff);
 }
 

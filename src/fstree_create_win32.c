@@ -12,6 +12,7 @@ static void fill_item(item_t *item, WIN32_FIND_DATA *st, char *name, int parent)
   item->name       = name;
   item->attr       = st->dwFileAttributes;
   item->write_time = st->ftLastWriteTime;
+  item->size       = ((ULONGLONG)st->nFileSizeHigh << 32) | ((ULONGLONG)st->nFileSizeLow);
 }
 
 

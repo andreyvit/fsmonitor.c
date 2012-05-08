@@ -51,7 +51,7 @@ fsdiff_t *fstree_diff(fstree_t *previous, fstree_t *current) {
       if (r == 0) {
         // same item! compare mod times
 #ifdef _WIN32
-        bool same = curitems[i].attr == previtems[j].attr && curitems[i].write_time.dwHighDateTime == previtems[j].write_time.dwHighDateTime && curitems[i].write_time.dwLowDateTime == previtems[j].write_time.dwLowDateTime;
+        bool same = curitems[i].attr == previtems[j].attr && curitems[i].size == previtems[j].size && curitems[i].write_time.dwHighDateTime == previtems[j].write_time.dwHighDateTime && curitems[i].write_time.dwLowDateTime == previtems[j].write_time.dwLowDateTime;
 #else
         bool same = curitems[i].st_mode == previtems[j].st_mode && curitems[i].st_dev == previtems[j].st_dev && curitems[i].st_ino == previtems[j].st_ino && curitems[i].st_mtimespec.tv_sec == previtems[j].st_mtimespec.tv_sec && curitems[i].st_mtimespec.tv_nsec == previtems[j].st_mtimespec.tv_nsec && curitems[i].st_ctimespec.tv_sec == previtems[j].st_ctimespec.tv_sec && curitems[i].st_ctimespec.tv_nsec == previtems[j].st_ctimespec.tv_nsec && curitems[i].st_size == previtems[j].st_size;
 #endif

@@ -41,6 +41,7 @@ typedef struct item_t {
 #ifdef _WIN32
   DWORD attr;
   FILETIME write_time;
+  ULONGLONG size;
 #else
   mode_t st_mode;
   dev_t st_dev;
@@ -59,9 +60,13 @@ struct fstree_t {
 #ifdef _WIN32
 #define FSTREE_ITEM_IS_DIR(item) ((item)->attr & FILE_ATTRIBUTE_DIRECTORY)
 #define FSTREE_ITEM_IS_REG(item) (!FSTREE_ITEM_IS_DIR(item))
+#define FSTREE_ITEM_IS_LNK(item) (0)
+#define FSTREE_ITEM_TYPE(item) (FSTREE_ITEM_IS_DIR(item) ? fstree_item_type_dir : fstree_item_type_file)
 #else
 #define FSTREE_ITEM_IS_DIR(item) ((item)->st_mode == S_IFDIR)
 #define FSTREE_ITEM_IS_REG(item) ((item)->st_mode == S_IFREG)
+#define FSTREE_ITEM_IS_LNK(item) ((item)->st_mode == S_IFLNK)
+#define FSTREE_ITEM_TYPE(item) (FSTREE_ITEM_IS_REG(item) ? fstree_item_type_file : (FSTREE_ITEM_IS_DIR(item) ? fstree_item_type_dir : (FSTREE_ITEM_IS_LNK(item) ? fstree_item_type_link : fstree_item_type_other)))
 #endif
 
 /**************************************************************/

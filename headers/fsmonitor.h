@@ -20,10 +20,24 @@ void fsdiff_dump(fsdiff_t *diff);
 
 /**************************************************************/
 
+typedef enum {
+    fstree_item_type_file,
+    fstree_item_type_dir,
+    fstree_item_type_link,
+    fstree_item_type_other,
+} fstree_item_type;
+
+const char *fstree_item_type_name(fstree_item_type type);
+
+/**************************************************************/
+
 typedef struct fstree_t fstree_t;
 
 fstree_t *fstree_create(const char *path, fsfilter_t *filter, fstree_t *previous);
 void fstree_free(fstree_t *tree);
+
+int fstree_count(fstree_t *tree);
+const char *fstree_get(fstree_t *tree, int index, int *parent_index, fstree_item_type *type, long *size, long *time_sec, long *time_nsec);
 
 void fstree_dump(fstree_t *tree);
 
@@ -55,7 +69,8 @@ void fslistener_free(fslistener_t *listener);
 typedef struct fsmonitor_t fsmonitor_t;
 
 // diff ownership is transferred to the callback, call fsdiff_free(diff) when done
-typedef void (*fsmonitor_callback_t)(fsdiff_t *diff, void *data);
+// tree ownership is NOT transferred to the callback, and the tree MUST NOT be accessed after returning from the callback
+typedef void (*fsmonitor_callback_t)(fsdiff_t *diff, fstree_t *tree, void *data);
 
 fsmonitor_t *fsmonitor_create(const char *path, fsfilter_t *filter, fsmonitor_callback_t callback, void *data);
 void fsmonitor_free(fsmonitor_t *monitor);
